@@ -21,13 +21,18 @@
             display: block;
             margin: 10px 0;
             cursor: pointer;
-            color: blue;
+            color: #569cd6; /* VS Code blue for links */
             text-decoration: none;
         }
+        .problem-link:hover {
+            text-decoration: underline;
+        }
         .code-box {
-            border: 1px solid #ccc;
+            border: 1px solid #3e3e3e;
             padding: 15px;
             display: none;
+            background-color: #1e1e1e; /* VS Code dark background */
+            border-radius: 4px;
         }
         .tabs {
             margin-bottom: 10px;
@@ -36,9 +41,13 @@
             padding: 5px 10px;
             margin-right: 5px;
             cursor: pointer;
+            background-color: #2d2d2d;
+            color: #d4d4d4; /* Light gray text */
+            border: none;
+            border-radius: 3px;
         }
         .tab-button.active {
-            background-color: #ddd;
+            background-color: #3e3e3e;
         }
         .code-content {
             display: none;
@@ -48,8 +57,27 @@
         }
         pre {
             margin: 0;
-            background: #f4f4f4;
             padding: 10px;
+            background: #1e1e1e; /* Dark background */
+            color: #d4d4d4; /* Default text color */
+            font-family: 'Consolas', 'Courier New', monospace;
+            overflow-x: auto;
+        }
+        /* VS Code-like syntax highlighting */
+        .keyword {
+            color: #569cd6; /* Blue for keywords */
+        }
+        .string {
+            color: #ce9178; /* Orange for strings */
+        }
+        .number {
+            color: #b5cea8; /* Green for numbers */
+        }
+        .comment {
+            color: #6a9955; /* Green for comments */
+        }
+        .function {
+            color: #dcdcaa; /* Yellow for functions */
         }
     </style>
 </head>
@@ -98,8 +126,9 @@
             </div>
             <div class="code-box" id="binarysearch">
                 <div class="tabs">
-                    <button class="tab-button active" data-lang="rust">rust</button>
-                    <button class="tab-button" data-lang="javascript">JavaScript</button>
+                    <button class="tab-button" data-lang="rust">rust</button>
+                    <button class="tab-button active" data-lang="javascript">JavaScript</button>
+                    <button class="tab-button" data-lang="csharp">C#</button>
                 </div>
                 <div class="code-content active" data-lang="rust">
                     <pre>
@@ -125,6 +154,42 @@
                             else if (arr[middlePoint] < val) {
                                 console.log('val is greater than', arr[middlePoint]);
                                 return binarySearch(val, arr, middlePoint + 1, upperBound);
+                            }
+                        }
+                        
+                    </pre>
+                </div>
+                <div class="code-content" data-lang="csharp">
+                    <pre>
+                        public static int? BinarySearch(int[] arr, int val, int lowerBound = 0, int upperBound = -1)
+                        {
+                            if (upperBound == -1)
+                            {
+                                upperBound = arr.Length - 1;
+                            }
+                    
+                            if (lowerBound > upperBound)
+                            {
+                                return null;
+                            }
+                    
+                            // Calculate middle point
+                            int middlePoint = lowerBound + (upperBound - lowerBound) / 2;
+                    
+                            // Compare value at middle point with target
+                            if (arr[middlePoint] == val)
+                            {
+                                return middlePoint;  // Found it, return index
+                            }
+                            else if (arr[middlePoint] > val)
+                            {
+                                // Search left half
+                                return BinarySearch(arr, val, lowerBound, middlePoint - 1);
+                            }
+                            else
+                            {
+                                // Search right half
+                                return BinarySearch(arr, val, middlePoint + 1, upperBound);
                             }
                         }
                         
