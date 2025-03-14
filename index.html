@@ -34,6 +34,10 @@
             background-color: #1e1e1e; /* VS Code dark background */
             border-radius: 4px;
         }
+
+        .code-box p {
+            color: white;
+        }
         .tabs {
             margin-bottom: 10px;
         }
@@ -87,14 +91,16 @@
             <h2>Problems</h2>
             <a class="problem-link" data-problem="fizzbuzz">FizzBuzz</a>
             <a class="problem-link" data-problem="binarysearch">BinarySearch</a>
+            <a class="problem-link" data-problem="crystalballs">Crystal Balls</a>
         </div>
         <div class="content">
+            <h1>Solutions</h1>
             <div class="code-box" id="fizzbuzz">
                 <div class="tabs">
-                    <button class="tab-button active" data-lang="rust">rust</button>
-                    <button class="tab-button" data-lang="javascript">JavaScript</button>
+                    <button class="tab-button" data-lang="rust">rust</button>
+                    <button class="tab-button active" data-lang="javascript">JavaScript</button>
                 </div>
-                <div class="code-content active" data-lang="rust">
+                <div class="code-content" data-lang="rust">
                     <pre>
                         fn fizzbuzz (num:i32)-> {
                             match (num % 3, num % 5) {
@@ -113,7 +119,7 @@
                         }
                     </pre>
                 </div>
-                <div class="code-content" data-lang="javascript">
+                <div class="code-content active" data-lang="javascript">
                     <pre>
                         const fizzbuzz = (num) => {
                             if (num % 3 === 0 && num % 5 === 0) {return  "fizzbuzz"; }
@@ -130,12 +136,12 @@
                     <button class="tab-button active" data-lang="javascript">JavaScript</button>
                     <button class="tab-button" data-lang="csharp">C#</button>
                 </div>
-                <div class="code-content active" data-lang="rust">
+                <div class="code-content" data-lang="rust">
                     <pre>
 
                     </pre>
                 </div>
-                <div class="code-content" data-lang="javascript">
+                <div class="code-content active" data-lang="javascript">
                     <pre>
                         const binarySearch = (val, arr, lowerBound = 0, upperBound = arr.length - 1) => {
                             if (lowerBound > upperBound) {
@@ -161,38 +167,104 @@
                 </div>
                 <div class="code-content" data-lang="csharp">
                     <pre>
-                        public static int? BinarySearch(int[] arr, int val, int lowerBound = 0, int upperBound = -1)
+                        public bool Binary(int[] arr, int needle, int low = 0, int hi = -1)
                         {
-                            if (upperBound == -1)
+                            if (hi == -1)
                             {
-                                upperBound = arr.Length - 1;
+                                hi = arr.Length - 1;
                             }
-                    
-                            if (lowerBound > upperBound)
+                        
+                            if (low > hi)
                             {
-                                return null;
+                                return false;
                             }
-                    
-                            // Calculate middle point
-                            int middlePoint = lowerBound + (upperBound - lowerBound) / 2;
-                    
-                            // Compare value at middle point with target
-                            if (arr[middlePoint] == val)
+                        
+                            int middlePoint = (low + hi) / 2; // Integer division floors automatically
+                        
+                            if (arr[middlePoint] == needle)
                             {
-                                return middlePoint;  // Found it, return index
+                                // can return middlepoint if we want index
+                                return true;
                             }
-                            else if (arr[middlePoint] > val)
+                            else if (needle > arr[middlePoint])
                             {
-                                // Search left half
-                                return BinarySearch(arr, val, lowerBound, middlePoint - 1);
+                                return Binary(arr, needle, middlePoint + 1, hi);
                             }
-                            else
+                            else // needle < arr[middlePoint]
                             {
-                                // Search right half
-                                return BinarySearch(arr, val, middlePoint + 1, upperBound);
+                                return Binary(arr, needle, low, middlePoint - 1);
                             }
                         }
+                    </pre>
+                </div>
+            </div>
+            <div class="code-box" id="crystalballs">
+                <div class="tabs">
+                    <button class="tab-button" data-lang="rust">rust</button>
+                    <button class="tab-button active" data-lang="javascript">JavaScript</button>
+                    <button class="tab-button" data-lang="csharp">C#</button>
+                </div>
+                <p>
+                    When given two crystal balls that will break if dropped from a high enough distance,
+                    determine the exact spot in which it will break in the most optimized way.
+                    This segment demonstrates breaking down a search problem without using a linear search.
+
+                    basically this is an array of falses, and once it crosses a threshhold
+                    all values are true (ball is breaking from this floor up). So we have to find the true value and return the index
+                </p>
+                <div class="code-content active" data-lang="javascript">
+                    <pre>
+                        const twoCrystalBalls = (breaks) => {
+                            const jumpAmount = Math.floor(Math.sqrt(breaks.length));
                         
+                            let i = jumpAmount;
+                            for (; i < breaks.length; i += jumpAmount) {
+                                if (breaks[i]) {
+                                    break;
+                                }
+                            }
+                        
+                            i -= jumpAmount;
+                            for (let j = 0; j <= jumpAmount && i < breaks.length; j++, i++) {
+                                if (breaks[i]) {
+                                    return i;
+                                }
+                            }
+                        
+                            return -1;
+                        }
+                    </pre>
+                </div>
+                <div class="code-content" data-lang="csharp">
+                    <pre>
+                        
+                        public static int? TwoCrystalBalls(bool[] breaks)
+                        {
+                            int jumpAmount = (int)Math.Sqrt(breaks.Length);
+                            int i = 0;
+                            for (; i <= breaks.Length; i += jumpAmount){
+                                if (breaks[i])
+                                {
+                                    break;
+                                }
+                            }
+
+                            i -= jumpAmount;
+
+                            for (int j = 0; j < jumpAmount && breaks.Length; j++, i++){
+                                if(breaks[i])
+                                {
+                                    return i;
+                                }
+                            }
+
+                            return null;
+                        }
+                    </pre>
+                </div>
+                <div class="code-content" data-lang="rust">
+                    <pre>
+
                     </pre>
                 </div>
             </div>
